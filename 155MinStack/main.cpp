@@ -3,29 +3,34 @@
 #include <string>
 using namespace std;
 
-/*
-class person{
-public:
-    person(){a="asda";}
-    void print(){cout<<this->a<<endl;}
-private:
-    string a;
-};*/
-
-/*person::person() {}
-
-void person::print(){
-
-}*/
-
 int main() {
-   // cout << "Hello, World!" << endl;
-   // MinStack a = new MinStack();
-    MinStack a;
-    a.print();
-    cout<<"hello world"<<endl;
-//    person b;
-//    b.print();
+    MinStack *a = new MinStack();
+    a->push(-2);
+    a->push(0);
+    a->push(-3);
+    cout<<a->getMin()<<endl;
+    a->pop();
+    cout<<a->top()<<endl;
+    cout<<a->getMin()<<endl;
 
+  /*  a->push(2147483646);
+    a->push(2147483646);
+    a->push(2147483647);
+    cout<<a->top()<<endl;
+    a->pop();
+    cout<<a->getMin()<<endl;
+    a->pop();
+    cout<<a->getMin()<<endl;
+    a->pop();
+    cout<<"pop last element"<<endl;
+    a->push(2147483647);
+    cout<<a->top()<<endl;
+    cout<<a->getMin()<<endl;
+    a->push(-2147483648);
+    cout<<a->top()<<endl;
+    cout<<a->getMin()<<endl;
+    a->pop();
+    cout<<a->getMin()<<endl;*/
+    delete a;
     return 0;
 }
