@@ -2,3 +2,6 @@
 */cmake-build-debug/*
 */main
 */*.o
+cmake-build-debug/*
+.idea/*
+*.txt
