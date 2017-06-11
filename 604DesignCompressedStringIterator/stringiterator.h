@@ -7,11 +7,14 @@
 #include <string>
 #include <vector>
 using namespace std;
+
 class StringIterator {
 public:
     vector<char> uncompressedString;
+    vector<char>::iterator snit;
+
     StringIterator(string compressedString);
-    string::iterator snit= compressedString.begin();
+
     char next();
 
     bool hasNext();

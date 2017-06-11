@@ -7,12 +7,21 @@
 using namespace std;
 
 int main(){
-    StringIterator * a= new StringIterator("a3s1d2a1");
+    StringIterator * a= new StringIterator("x6");
     cout<<a->uncompressedString.size()<<endl;
     for(vector<char>::iterator it=a->uncompressedString.begin();it!=a->uncompressedString.end();it++){
         cout<<*it<<endl;
     }
-   // cout<<"hello"<<endl;
+/*    cout<<a->next()<<endl;
+    cout<<a->next()<<endl;
+    cout<<a->next()<<endl;
+    cout<<a->next()<<endl;
+    cout<<a->next()<<endl;
+    cout<<a->next()<<endl;
+    cout<<a->hasNext()<<endl;
+    cout<<a->next()<<endl;
+    cout<<a->hasNext()<<endl;*/
+
     delete a;
     return 0;
 }
