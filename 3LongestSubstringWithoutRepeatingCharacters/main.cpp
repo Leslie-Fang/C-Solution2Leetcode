@@ -13,14 +13,21 @@ int findlengthOfLongestSubstring(int max,int it,string s){
     if(it == s.size()){
         return 0;
     }
-    map<char,int>::iterator iffind;
+    map<char,int>::iterator iffind,iffind2;
     while(it < s.size()){
         iffind=longest.find(s[it]);
         if(iffind == longest.end()){
             longest[s[it]]=it;
         }else{
-            for(map<char,int>::iterator it = longest.begin(); it != longest.end();it++){
+           /* for(map<char,int>::iterator it = longest.begin(); it != longest.end();it++){
                 cout<<it->first<<endl;
+            }*/
+            int it3=it++;
+            iffind2=longest.find(s[it3]);
+            while(iffind2 != longest.end()){
+                iffind=iffind2;
+                it3++;
+                iffind2=longest.find(s[it3]);
             }
             if(longest.size() >= max){
                 max=longest.size();
@@ -43,7 +50,7 @@ int lengthOfLongestSubstring(string s) {
     if(s.length() == 0){
         return 0;
     }
-    cout<<"In the lengthOfLongestSubstring start: "<<s<<endl;
+//    cout<<"In the lengthOfLongestSubstring start: "<<s<<endl;
     max=findlengthOfLongestSubstring(max,0,s);
 
     return max;
