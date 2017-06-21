@@ -10,8 +10,8 @@ using namespace std;
 
 vector<string> findRestaurant(vector<string>& list1, vector<string>& list2) {
     vector<string> result;
-    map<string ,int> map1;
-    map<string ,int> map2;
+    map<string,int> map1;
+    map<string,int> map2;
     for(int i=0;i<list1.size();i++){
         string str1=list1[i];
         for(int j=0;j<list2.size();j++){
