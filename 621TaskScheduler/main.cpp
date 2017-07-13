@@ -18,9 +18,9 @@ int leastInterval(vector<char>& tasks, int n) {
             tasks2number[*it] +=1;
         }
     }
-/*    for(map<char,int>::iterator it=tasks2number.begin();it != tasks2number.end();it++){
+   for(map<char,int>::iterator it=tasks2number.begin();it != tasks2number.end();it++){
         cout<<it->first<<" : "<<it->second<<endl;
-    }*/
+    }
     while(!tasks2number.empty()){
         bool finish=false;
         for(map<char,int>::iterator it=tasks2number.begin();it != tasks2number.end();it++){
