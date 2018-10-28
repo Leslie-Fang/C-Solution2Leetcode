@@ -1,20 +1,5 @@
 #include <iostream>
 using namespace std;
-
-bool isPowerOfTwo(int num) {
-    while(num != 1){
-    	if(num%2 != 0){
-    		return false;
-    	}else{
-    		num = num/2;
-    	}
-    }
-    if(num == 1){
-    	return true;
-    }
-    return false;
-}
-
 bool isPowerOfFour(int num) {
 	if(num == 1 ){
 		return true;
