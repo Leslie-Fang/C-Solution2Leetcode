@@ -5,10 +5,12 @@ using namespace std;
 class Solution {
 public:
     bool canJump(vector<int>& nums);
+    bool tryJump(vector<int>& nums,int pos,int len);
+    bool tryJump2(vector<int>& nums,int pos);
+    bool canJump2(vector<int>& nums, int from,int to);
 };
-bool tryJump(vector<int>& nums,int cstep);
 int main(){
-	int input[5] = {2,3,1,1,4};
+	int input[5] = {3,2,1,0,4};
 	vector<int> inputVector(begin(input),end(input));
 	Solution * mySolution = new Solution();
 	cout<<mySolution->canJump(inputVector)<<endl;
@@ -16,27 +18,55 @@ int main(){
 }
 
 bool Solution::canJump(vector<int>& nums){
-	if(nums.size() == 1){
-		return true;
-	}
-	return tryJump(nums,0);
+	//return tryJump(nums,0,0);
+	return tryJump2(nums,nums.size()-1);
 }
-
-bool tryJump(vector<int>& nums,int cstep){
-	// for(int i=nums[cstep];i>=1;i--){
-	// 	if((cstep+i)== (nums.size()-1) ){
-	// 		return true;
-	// 	}
-	// }
-	if(cstep+nums[cstep] >= (nums.size()-1)){
+bool Solution::tryJump(vector<int>& nums,int pos,int len)
+{
+	cout<<"----cpos is: "<<pos<<" step is: "<<len<<endl;
+	if(pos+len >= nums.size())
+	{
+		return false;
+	}else if(pos+len == nums.size()-1)
+	{
 		return true;
-	}
-	bool res = false;
-	for(int i=nums[cstep];i>=1;i--){
-		res = res || tryJump(nums,cstep+i);
-		if(res == true){
-			return res;
+	}else
+	{
+		int cpos = pos+len;
+		cout<<"cpos is: "<<cpos<<endl;
+		for(int i=nums[cpos];i>=1;i--)
+		{
+			cout<<"cpos is: "<<cpos<<endl;
+			cout<<"cpos is: "<<cpos<<" step is: "<<i<<endl;
+			if(nums.size() <= cpos+i)
+			{
+				return true;
+			}
+			if(tryJump(nums,cpos,i))
+			{
+				return true;
+			}
+			//exit(1);
 		}
 	}
-	return res;
+	return false;
+
 }
+
+bool Solution::tryJump2(vector<int>& nums,int pos)
+{
+	for(int i=pos-1;i>=0;i--)
+	{
+		if(i+nums[i] >= pos)
+		{
+			cout<<"pos is : "<<pos<<endl;
+			if(i==0)
+			{
+				return true;
+			}
+			return tryJump2(nums,i);
+		}
+	}
+	return false;
+}
+
