@@ -15,12 +15,6 @@ public:
         	return res;
         }else
         {
-        	// vector<int> temp = subGrayCode(n);
-        	// for(int i=0;i<temp.size();i++)
-        	// {
-        	// 	cout<<temp[i]<<endl;
-        	// 	res.push_back(two2ten(temp[i]));
-        	// }
         	res = subGrayCode(n);
         }
         return res;
@@ -48,18 +42,6 @@ public:
    		}
    		return res;
    	}
-    // int two2ten(int input)
-    // {
-    // 	int result = 0;
-    // 	int index  = 0;
-    // 	while(input != 0)
-    // 	{
-    // 		result += (input % 10)*pow(2,index);
-    // 		index += 1;
-    // 		input = input / 10;
-    // 	}
-    // 	return result;
-    // }
 };
 
 int main(int argc,char ** argv)
