@@ -14,7 +14,7 @@ public:
         	 result.insert(result.begin(),mylist[num%16]);
         	 num = num/16; 
         }
-        result.insert(result.begin(),mylist[num%16-1]);
+        result.insert(result.begin(),mylist[num%16]);
         return result;
 	}
     string toHex(int num) {
@@ -27,7 +27,7 @@ public:
 			result = cal(num);
     	}else
     	{
-    		unsigned int subnum =  pow(2,32) + num;
+    		unsigned int subnum =  pow(2,32) + num;// calculate the two’s complement, when input is negative 
 			result = cal(subnum);
     	}
         return result;
