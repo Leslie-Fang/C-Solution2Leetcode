@@ -3,45 +3,124 @@
 //
 #include<iostream>
 #include<vector>
+#include<iterator>
+#include <algorithm> 
 #include<set>
+#include<map>
 using namespace std;
 
 //if a num in nums has been scanned, we never need to scan it again, because it would cause the duplicate set
-vector<vector<int> > threeSum(vector<int>& nums) {
-    vector<vector<int> > res;
-    set<int> scaneed,scaneed2;
-    int find = 0;
-    for(vector<int>::iterator it=nums.begin();it != nums.end();it++){
-        if(scaneed.find(*it) == scaneed.end()) {
-            cout<<"1 level: "<<*it<<endl;
-            scaneed2.clear();
-            for(vector<int>::iterator it2=it+1;it2 != nums.end();it2++){
-                cout<<"2 level: "<<*it2<<endl;
-                if(scaneed.find(*it2) == scaneed.end() && scaneed2.find(*it2) == scaneed2.end()){
-                    for(vector<int>::iterator it3=it2+1;it3 != nums.end();it3++){
-                        cout<<"3 level: "<<*it3<<endl;
-                        if(scaneed.find(*it3) == scaneed.end()){
-                            if(*it+*it2+*it3 == 0){
-                                vector<int> *subres = new vector<int>;
-                                subres->push_back(*it);
-                                subres->push_back(*it2);
-                                subres->push_back(*it3);
-                                res.push_back(*subres);
-                                find = 1;
-                                break;
-                            }
-                        }else{
-                            continue;
-                        }
-                    }
-                    scaneed2.insert(*it2);
-                }else{
-                    continue;
+void twoSum(int target, int mydelete, map<int, int> numCount, vector<vector<int> > &res){
+    numCount.erase(numCount.begin(), next(numCount.find(mydelete),1));
+    map<int, int>::iterator it;
+    map<int, int>::iterator it2;
+    vector<int> sub;
+    for(it = numCount.begin();it != numCount.end();it++)
+    {
+        if(it->first*2 > target)
+        {
+            break;
+        }
+        if(it->second >= 2)
+        {
+            if(it->first + it->first == target)
+            {
+                sub.clear();
+                sub.push_back(mydelete);
+                sub.push_back(it->first);
+                sub.push_back(it->first);
+                res.push_back(sub);
+                break;
+            }
+        }
+        if(it->second >= 1)
+        {
+            for(it2 = next(it,1); it2 != numCount.end();it2++)
+            {
+                if(it->first + it2->first > target)
+                {
+                    break;
+                }
+                if(it->first + it2->first == target)
+                {
+                    sub.clear();
+                    sub.push_back(mydelete);
+                    sub.push_back(it->first);
+                    sub.push_back(it2->first);
+                    res.push_back(sub);
                 }
             }
-            scaneed.insert(*it);
-        }else{
-            continue;
+        }
+    }
+    return;
+}
+
+vector<vector<int> > threeSum(vector<int>& nums) {
+    //std::sort(nums.begin(), nums.end()); 
+    vector<vector<int> > res;
+    map<int, int> numCount;
+    map<int, int>::iterator it;
+    map<int, int>::iterator it2;
+    vector<int> sub;
+    for(int i=0;i<nums.size();i++)
+    {
+        it = numCount.find(nums[i]);
+        if( it != numCount.end())
+        {
+            it->second += 1;
+        }else
+        {
+            numCount.insert(pair<int, int>(nums[i], 1));
+        }
+    }
+    for(it = numCount.begin();it != numCount.end();it++)
+    {
+        if(it->first > 0)
+        {
+            break;
+        }
+        if(it->second >= 3 && it->first == 0)
+        {
+            sub.clear();
+            sub.push_back(0);
+            sub.push_back(0);
+            sub.push_back(0);
+            res.push_back(sub);
+            break;
+        }
+        if(it->second >= 2 && next(it,1) != numCount.end())
+        {
+            sub.clear();
+            sub.push_back(it->first);
+            sub.push_back(it->first);
+            int subres = it->first + it->first;
+            if(subres + prev(numCount.end(),1)->first >= 0)
+            {
+                for(it2 = next(it,1); it2 != numCount.end();it2++)
+                {
+                    if(subres+it2->first > 0)
+                    {
+                        break;
+                    }
+                    if(subres+it2->first == 0)
+                    {
+                        sub.push_back(it2->first);
+                        res.push_back(sub);
+                        break;
+                    }
+                }
+            }
+        }
+        if(it->second >= 1)
+        {
+            if(it->first + 2*(prev(numCount.end(),1)->first) >= 0)
+            {
+                if(it->first + next(it,1)->first*2 > 0)
+                {
+                    break;
+                }
+                twoSum(-it->first, it->first, numCount, res);
+            }
         }
 
     }
@@ -54,12 +133,6 @@ int main(){
     int input[] = {0,0,0,0};
     vector<int> vinput(input, input+4) ;
     vector<vector<int> > res = threeSum(vinput);
-//    vector<vector<int> >::iterator it=res.begin();
-//    for(vector<int>::iterator it2=it->begin();it2 != it->end();it2++){
-//        cout<<*it2<<endl;
-//    }
-
-
     cout<<"Hello world!"<<endl;
     return 1;
 }
