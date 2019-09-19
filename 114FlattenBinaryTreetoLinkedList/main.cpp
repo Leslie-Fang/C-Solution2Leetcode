@@ -9,36 +9,36 @@ struct TreeNode {
 };
 class Solution {
 public:
-    void flatten(TreeNode* root);
-    TreeNode* cNode;
-    void DFS(TreeNode* root);
+	void DFS(TreeNode* root, TreeNode * &cNode){
+		TreeNode * left = root->left;
+		TreeNode * right = root->right;
+		if(left != NULL){
+			cNode->right = left;
+			cNode->left = NULL;
+			cNode = left;
+			DFS(left, cNode);
+			
+		}
+		if(right != NULL){
+			cNode->right = right;
+			cNode->left = NULL;
+			cNode = right;
+			DFS(right, cNode);
+		}
+		return;
+
+	}
+    void flatten(TreeNode* root){
+		if(root == NULL){
+			return;
+		}
+		TreeNode * cNode = root;
+		DFS(root, cNode);
+		return;
+	}
 };
 int main(){
 	cout<<"Hello World!"<<endl;
 	return 1;
 }
-void Solution::flatten(TreeNode* root){
-	if(root == NULL){
-		return;
-	}
-	this->cNode = root;
-	this->DFS(root);
-	return;
-}
 
-void Solution::DFS(TreeNode* root){
-	TreeNode * left = root->left;
-	TreeNode * right = root->right;
-	if(left != NULL){
-		this->cNode->right = left;
-		this->cNode = this->cNode->right;
-		DFS(left);
-	}
-	if(right != NULL){
-		this->cNode->right = right;
-		this->cNode = this->cNode->right;
-		DFS(right);
-	}
-	return;
-
-}
