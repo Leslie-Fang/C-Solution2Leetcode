@@ -43,7 +43,6 @@ public:
     	for(int i=0;i<look[digits[0]].length();i++)
     	{
     		DFS(digits.substr(1, digits.length()-1), sub, look[digits[0]][i], res);
-    		//cout<<look[digits[0]][i]<<endl;
     	}
     	return res;
     }

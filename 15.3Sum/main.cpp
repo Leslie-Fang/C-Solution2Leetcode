@@ -4,9 +4,10 @@
 #include<iostream>
 #include<vector>
 #include<iterator>
-#include <algorithm> 
+#include<algorithm> 
 #include<set>
 #include<map>
+#include<time.h>
 using namespace std;
 
 //if a num in nums has been scanned, we never need to scan it again, because it would cause the duplicate set
@@ -57,6 +58,10 @@ void twoSum(int target, int mydelete, map<int, int> numCount, vector<vector<int>
 
 vector<vector<int> > threeSum(vector<int>& nums) {
     //std::sort(nums.begin(), nums.end()); 
+
+    clock_t startTime,endTime;
+    startTime = clock();
+
     vector<vector<int> > res;
     map<int, int> numCount;
     map<int, int>::iterator it;
@@ -73,6 +78,7 @@ vector<vector<int> > threeSum(vector<int>& nums) {
             numCount.insert(pair<int, int>(nums[i], 1));
         }
     }
+    cout << "Map Time : " <<(double)(clock() - startTime) / CLOCKS_PER_SEC << "s" << endl;
     for(it = numCount.begin();it != numCount.end();it++)
     {
         if(it->first > 0)
@@ -124,6 +130,7 @@ vector<vector<int> > threeSum(vector<int>& nums) {
         }
 
     }
+    cout << "Total Time : " <<(double)(clock() - startTime) / CLOCKS_PER_SEC << "s" << endl;
     return res;
 }
 

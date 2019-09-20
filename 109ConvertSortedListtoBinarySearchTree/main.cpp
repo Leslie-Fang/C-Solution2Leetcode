@@ -24,28 +24,8 @@ public:
         	temp.push_back(cur->val);
         	cur = cur->next;
         }
-        TreeNode * res = NULL;
-        int total_element = temp.size();
-        if(total_element != 0)
-        {
-        	res = new TreeNode(temp[total_element/2]);
-        	if(total_element == 1)
-        	{
-        		return res;
-        	}else
-        	{
-        		res->left = sub(vector<int>(temp.begin(), temp.begin()+total_element/2));
-        	}
-        	if(total_element == 2)
-        	{
-        		return res;
-        	}else
-        	{
-        		res->right = sub(vector<int>(temp.begin()+total_element/2+1,temp.end()));
-        	}
-        }
        
-        return res;
+        return sub(temp);
     }
     TreeNode* sub(vector<int> temp)
     {   
