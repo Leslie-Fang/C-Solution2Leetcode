@@ -15,21 +15,16 @@ public:
     	{
     		return m&n;
     	}
+    	int find_end = 0;
     	while(index >= 0)
     	{
-    		if(n-pow(2,index) >= 0)
+    		if(n-pow(2,index) >= 0 && !find_end)
     		{
     			end = index;
-    			break;
+    			find_end = 1;
     		}
-    		index -= 1;
-    	}
-    	index = 30;
-    	while(index >= 0)
-    	{
     		if(m-pow(2,index) >= 0)
     		{
-
     			start = index+1;
     			break;
     		}
@@ -37,9 +32,8 @@ public:
     	}
     	if(start > end)
     	{
-    		cout<<"in same dis"<<endl;
-    		cout<<"end is: "<<end<<endl;
-    		res = res + rangeBitwiseAnd(m-pow(2,end),n-pow(2,end)) + pow(2,end);
+    		int add = pow(2,end);
+    		res = res + rangeBitwiseAnd(m-add,n-add) + add;
     		return res;
     	}else
     	{
