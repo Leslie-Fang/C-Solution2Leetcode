@@ -2,14 +2,25 @@
 #include <sstream>
 #include <string>
 #include <math.h>
+#include <time.h>
 using namespace std;
 class Solution {
 public:
-    int rangeBitwiseAnd(int m, int n) {
-    	cout<<"m is:"<<m<<endl;
-    	cout<<"n is:"<<n<<endl;
+    int rangeBitwiseAnd(int m, int n, int index=30) {
     	int res=0;
-    	int index = 30;
+    	if(n-m <= 200)
+    	{
+    		res = m;
+    		if(m == 2147483647)
+    		{
+    			return 2147483647;
+    		}
+    		for(long i=m+1;i<=n;i++)
+    		{
+    			res = res & i;
+    		}
+    		return res;
+    	}
     	int start = 0, end=0;
     	if(m<2 && n<2)
     	{
@@ -33,13 +44,23 @@ public:
     	if(start > end)
     	{
     		int add = pow(2,end);
-    		res = res + rangeBitwiseAnd(m-add,n-add) + add;
+    		res = res + rangeBitwiseAnd(m-add,n-add,end-1) + add;
     		return res;
     	}else
     	{
     		return 0;
     	}
         return res;
+    }
+
+    int rangeBitwiseAnd2(int m, int n)
+    {
+    	int res = m;
+    	for(int i=m+1;i<=n;i++)
+    	{
+    		res = res & i;
+    	}
+    	return res;
     }
 };
 int main()
@@ -57,7 +78,11 @@ int main()
 	cout<<m<<endl;
 	cout<<n<<endl;
 	Solution * mySolution = new Solution();
+	clock_t startTime,endTime;
+	startTime = clock();
 	cout<<mySolution->rangeBitwiseAnd(m,n)<<endl;
+	endTime = clock();
+	cout << "Totle Time : " <<(double)(endTime - startTime) / CLOCKS_PER_SEC << "s" << endl;
 	delete mySolution;
 	return 0;
 }
