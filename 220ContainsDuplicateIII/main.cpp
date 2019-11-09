@@ -17,7 +17,7 @@ public:
                 if(dup[i].first+t>=dup[j].first){
                    if(abs(dup[i].second-dup[j].second)<=k){
                         return true;
-               } 
+                   } 
                 }
                 else{
                     break;
