@@ -34,36 +34,30 @@ public:
 		return myStack.empty()?end-start+1:0;
 	}
     int longestValidParentheses(string s) {
-    	int max = 0;
-    	int index = 0;
-    	int temp = 0;
-    	stack<char> myStack;
+    	stack<int> myStack;
+    	myStack.push(-1);
     	int length = s.size();
-    	int init = length%2==0?length:length-1;
-    	cout<<init<<endl;
-    	if(length <= 1)
+    	int max = 0;
+    	for(int i=0;i<length;i++)
     	{
-    		return 0;
+    		if(s[i] == '(')
+    		{
+    			myStack.push(i);
+    		}else
+    		{
+    			myStack.pop();
+    			if(myStack.empty())
+    			{
+    				myStack.push(i);
+    			}else
+    			{
+    				max = max<i-myStack.top()?i-myStack.top():max;
+    			}
+    		}
     	}
-        for(int size=init;size<=length;size -=2)
-        {
-        	if(size <= 0)
-        	{
-        		break;
-        	}
-        	index = 0;
-        	while(index+size <= length)
-        	{
-        		temp = maxLength(s, index, index+size-1);
-        		if(temp != 0)
-        		{
-        			return temp;
-        		}
-        		index += 1;
-        	}
-        }
-        return max;
+    	return max;
     }
+
 };
 
 int main(int argc, char ** argv)
