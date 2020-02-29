@@ -90,10 +90,6 @@ public:
 		return tempHead;
 	}
 
-	// ListNode* cut(ListNode* node, int step)
-	// {
-
-	// }
     ListNode* sortList(ListNode* head) {
     	int index = 0;
     	ListNode* tempLeft = NULL;
@@ -112,7 +108,7 @@ public:
         	}
         	for (int size = 1; size < length; size <<= 1) 
         	{
-        		cout<<size<<"-------"<<endl;
+        		//cout<<"start size:"<<size<<"-------"<<endl;
         		temp = head;
         		index = 0;
         		last = NULL;
@@ -131,7 +127,7 @@ public:
         				tempLeft = temp;
         				     				
         				//temp = cut(temp, size);
-        				lasttemp = temp;
+        				lasttemp = NULL;
         				for(int i=0;i<size;i++)
         				{
         					lasttemp = temp;
@@ -140,13 +136,13 @@ public:
         				lasttemp->next = NULL;
 
         				index += size;
-        				cout<<"index"<<index<<endl;
-        				cout<<"length"<<length<<endl;
+        				// cout<<"index"<<index<<endl;
+        				// cout<<"length"<<length<<endl;
         				if(index+size <= length)
 	        			{
 	        				tempRight = temp;
 	        				
-	        				lasttemp = temp;
+	        				lasttemp = NULL;
 	        				for(int i=0;i<size;i++)
 	        				{
 	        					lasttemp = temp;
@@ -156,16 +152,19 @@ public:
 
 	        				//temp = cut(temp, size);
 	        				index += size;
-	        				cout<<tempLeft->val<<endl;
-	        				cout<<tempRight->val<<endl;
+	        				// cout<<tempLeft->val<<endl;
+	        				// cout<<tempRight->val<<endl;
 	        				tempLeft = mergeSortedList(tempLeft, tempRight);
 
-	        				cout<<"pinrt tempLeft"<<endl;
-	        				printList(tempLeft);
+	        				// cout<<"pinrt tempLeft"<<endl;
+	        				// printList(tempLeft);
 
-	        				if(last)
+	        				if(last == NULL)
 	        				{
-	        					last->next = tempLeft;		
+	        					head = tempLeft;		
+	        				}else
+	        				{
+	        					last->next = tempLeft;
 	        				}
 
 	        				ListNode* p = tempLeft;
@@ -174,25 +173,28 @@ public:
 	        					p = p->next;
 	        				}
 	        				last = p;
-	        				//last = lasttemp;
 	        				
 	        				last->next = temp;
-
-	        				printList(head);
 
 	        			}else
 	        			{
 	        				tempLeft = mergeSortedList(tempLeft, temp);
-	        				last->next = tempLeft;
+	        				if(last)
+	        				{
+								last->next = tempLeft;	
+	        				}else
+	        				{
+	        					head = tempLeft;
+	        				}
+	        				
 	        				break;
 	        			}
         			}else
         			{
-
         				break;
         			}
         		}
-        		printList(head);
+        		//printList(head);
         	}
     	}
     	return head;
