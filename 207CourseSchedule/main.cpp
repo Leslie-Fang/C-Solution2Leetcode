@@ -3,89 +3,117 @@
 #include <vector>
 #include <map>
 using namespace std;
+
 class Solution {
 public:
+	struct Node
+	{
+		int val;
+		vector<Node*> next;
+		Node(int value):val(value){}
+		~Node(){next.clear();}
+	};
+	bool DFS(vector<Node *> goThrough, Node * cur, map<int, bool>& memory)
+	{
+		if(find(goThrough.begin(), goThrough.end(), cur)!=goThrough.end())
+		{
+			return false;
+		}
+		//bool res = true;
+		goThrough.push_back(cur);
+		map<int, bool>::iterator it3;
+		for(vector<Node*>::iterator it = cur->next.begin(); it != cur->next.end();it++)
+		{
+			//res = res || DFS(root, *it);
+			it3 = memory.find((*it)->val);
+			if(it3 != memory.end())
+			{
+				continue;
+			}
+			if(!DFS(goThrough, *it, memory))
+			{
+				return false;
+			}
+			memory.insert(pair<int, bool>((*it)->val, true));
+		}
+		return true;
+	}
     bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
-    	map<int, vector<int>> mymap;
-    	map<int, vector<int>>::iterator it;
-    	for(int j=0;j<prerequisites.size();j++)
+    	bool res = true;
+    	Node * first;
+    	Node * second;
+    	map<int, Node*>::iterator it;
+    	for(int i=0;i<prerequisites.size();i++)
     	{
-    		it = mymap.find(prerequisites[j][0]);
-    		if(it == mymap.end())
+    		it = myMap.find(prerequisites[i][0]);
+    		if(it == myMap.end())
     		{
-    			vector<int> temp;
-    			temp.push_back(prerequisites[j][1]);
-    			mymap.insert(pair<int,vector<int> >(prerequisites[j][0],temp));
+    			first = new Node(prerequisites[i][0]);
+    			myMap.insert(pair<int,Node*>(prerequisites[i][0],first));
     		}else
     		{
-    			it->second.push_back(prerequisites[j][1]);
+    			first = it->second;
     		}
-    	}
-    	vector<int> target;
-    	for(int i=0;i<numCourses;i++)
-    	{
-    		it = mymap.find(i);
-    		target.clear();
-    		target.push_back(i);
-    		if(it != mymap.end())
+    		it = myMap.find(prerequisites[i][1]);
+    		if(it == myMap.end())
     		{
-    			if(!DFS(numCourses,mymap,target))
-    			{
-    				return false;
-    			}
+    			second = new Node(prerequisites[i][1]);
+    			myMap.insert(pair<int,Node*>(prerequisites[i][1],second));
+    		}else
+    		{
+    			second = it->second;
     		}
+    		second->next.push_back(first);
     	}
-        return true;
-    }
-    bool DFS(int numCourses, map<int, vector<int>> mymap, vector<int> target, bool unique=false)
-    {
-    	vector<int> requisites_list;
-    	vector<int> subtarget;
-    	map<int, vector<int>>::iterator it;
-    	for(int i=0;i<target.size();i++)
+    	vector<Node *> goThrough;
+    	map<int, bool> memory;
+    	map<int, bool>::iterator it3;
+
+    	//bool memory[numCourses] = {false};
+    	for(it = myMap.begin();it!=myMap.end();it++)
     	{
-    		if(unique && i==target.size()-2)
+    		goThrough.clear();
+    		goThrough.push_back(it->second);
+    		//if(memory.find)
+    		it3 = memory.find(it->first);
+    		if(it3 != memory.end())
     		{
     			continue;
     		}
-    		it = mymap.find(target[i]);
-    		if(it != mymap.end())
+    		for(vector<Node*>::iterator it2 = it->second->next.begin();it2 != it->second->next.end();it2++)
     		{
-    			for(int j=0;j<it->second.size();j++)
-    			{
-    				requisites_list.push_back(it->second[j]);
-    			}
-    		}
-    	}
-    	vector<int>::iterator it2;
-    	for(int i=0;i<requisites_list.size();i++)
-    	{
-    		it2 = find(target.begin(),target.end(),requisites_list[i]);
-    		if(it2 != target.end())
-    		{
-    			return false;
-    		}else
-    		{
-    			if(mymap.find(requisites_list[i]) == mymap.end())
-    			{
-    				return true;
-    			}
-    			subtarget = target;
-    			subtarget.push_back(requisites_list[i]);
-    			if(!DFS(numCourses,mymap,subtarget,true))
+    			it3 = memory.find((*it2)->val);
+	    		if(it3 != memory.end())
+	    		{
+	    			continue;
+	    		}
+    			if(!DFS(goThrough,*it2, memory))
     			{
     				return false;
     			}
+    			memory.insert(pair<int, bool>((*it2)->val, true));
     		}
+    		memory.insert(pair<int, bool>(it->first,true));
     	}
-    	return true;
+    	return true; 
     }
+    ~Solution()
+    {
+    	map<int, Node*>::iterator it;
+    	for(it = myMap.begin();it!=myMap.end();it++)
+    	{
+    		delete it->second;
+    	}
+    }
+private:
+	map<int, Node*> myMap;
 };
+
 int main(int argc, char ** argv)
 {
-	vector<vector<int>> prerequisites = {{1,0},{0,1}};
 	Solution * mySolution = new Solution();
-	cout<<mySolution->canFinish(2,prerequisites)<<endl;
+	vector<vector<int>> prerequisites = {{2,0},{1,0},{3,1},{3,2},{1,3}};
+	cout<<mySolution->canFinish(4,prerequisites)<<endl;
 	delete mySolution;
 	return 1;
 }
