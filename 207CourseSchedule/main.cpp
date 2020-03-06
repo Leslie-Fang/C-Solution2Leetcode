@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <vector>
 #include <map>
+#include <string.h>
 using namespace std;
 
 class Solution {
@@ -13,15 +14,27 @@ public:
 		Node(int value):val(value){}
 		~Node(){next.clear();}
 	};
-	bool DFS(vector<Node *> goThrough, Node * cur, bool* memory)
+	bool DFS(bool* goThrough, Node * cur, bool* memory, int & numCourses)
 	{
-		if(find(goThrough.begin(), goThrough.end(), cur)!=goThrough.end())
+		// if(find(goThrough.begin(), goThrough.end(), cur)!=goThrough.end())
+		// {
+		// 	return false;
+		// }
+		bool goThrough2[numCourses] = {false};
+		memcpy(goThrough2, goThrough, sizeof(bool) * numCourses);
+		// if(goThrough2.find(cur->val) != goThrough2.end())
+		// {
+		// 	return false;
+		// }
+		//bool res = true;
+		//goThrough.push_back(cur);
+		//map<int, bool>::iterator it3;
+		//goThrough2.insert(pair<int,bool>(cur->val, true));
+		if(goThrough2[cur->val])
 		{
 			return false;
 		}
-		//bool res = true;
-		goThrough.push_back(cur);
-		//map<int, bool>::iterator it3;
+		goThrough2[cur->val] = true;
 		for(vector<Node*>::iterator it = cur->next.begin(); it != cur->next.end();it++)
 		{
 			//res = res || DFS(root, *it);
@@ -30,7 +43,7 @@ public:
 			{
 				continue;
 			}
-			if(!DFS(goThrough, *it, memory))
+			if(!DFS(goThrough2, *it, memory, numCourses))
 			{
 				return false;
 			}
@@ -66,16 +79,19 @@ public:
     		}
     		second->next.push_back(first);
     	}
-    	vector<Node *> goThrough;
+    	//vector<Node *> goThrough;
     	//map<int, bool> memory;
     	//map<int, bool>::iterator it3;
 
     	bool memory[numCourses] = {false};
-    	//bool goThrough[numCourses] = {false};
     	for(it = myMap.begin();it!=myMap.end();it++)
     	{
-    		goThrough.clear();
-    		goThrough.push_back(it->second);
+    		//map<int, bool> goThrough;
+    		//goThrough.clear();
+    		//goThrough.push_back(it->second);
+    		bool goThrough[numCourses] = {false};
+    		goThrough[it->first] = true;
+    		//goThrough.insert(pair<int,bool>(it->first, true));
     		//if(memory.find)
     		//it3 = memory.find(it->first);
     		if(memory[it->first])
@@ -89,7 +105,7 @@ public:
 	    		{
 	    			continue;
 	    		}
-    			if(!DFS(goThrough,*it2, memory))
+    			if(!DFS(goThrough,*it2, memory, numCourses))
     			{
     				return false;
     			}
