@@ -13,7 +13,7 @@ public:
 		Node(int value):val(value){}
 		~Node(){next.clear();}
 	};
-	bool DFS(vector<Node *> goThrough, Node * cur, map<int, bool>& memory)
+	bool DFS(vector<Node *> goThrough, Node * cur, bool* memory)
 	{
 		if(find(goThrough.begin(), goThrough.end(), cur)!=goThrough.end())
 		{
@@ -21,12 +21,12 @@ public:
 		}
 		//bool res = true;
 		goThrough.push_back(cur);
-		map<int, bool>::iterator it3;
+		//map<int, bool>::iterator it3;
 		for(vector<Node*>::iterator it = cur->next.begin(); it != cur->next.end();it++)
 		{
 			//res = res || DFS(root, *it);
-			it3 = memory.find((*it)->val);
-			if(it3 != memory.end())
+			//it3 = memory.find((*it)->val);
+			if(memory[(*it)->val])
 			{
 				continue;
 			}
@@ -34,7 +34,8 @@ public:
 			{
 				return false;
 			}
-			memory.insert(pair<int, bool>((*it)->val, true));
+			memory[(*it)->val] = true;
+			//memory.insert(pair<int, bool>((*it)->val, true));
 		}
 		return true;
 	}
@@ -66,24 +67,25 @@ public:
     		second->next.push_back(first);
     	}
     	vector<Node *> goThrough;
-    	map<int, bool> memory;
-    	map<int, bool>::iterator it3;
+    	//map<int, bool> memory;
+    	//map<int, bool>::iterator it3;
 
-    	//bool memory[numCourses] = {false};
+    	bool memory[numCourses] = {false};
+    	//bool goThrough[numCourses] = {false};
     	for(it = myMap.begin();it!=myMap.end();it++)
     	{
     		goThrough.clear();
     		goThrough.push_back(it->second);
     		//if(memory.find)
-    		it3 = memory.find(it->first);
-    		if(it3 != memory.end())
+    		//it3 = memory.find(it->first);
+    		if(memory[it->first])
     		{
     			continue;
     		}
     		for(vector<Node*>::iterator it2 = it->second->next.begin();it2 != it->second->next.end();it2++)
     		{
-    			it3 = memory.find((*it2)->val);
-	    		if(it3 != memory.end())
+    			//it3 = memory.find((*it2)->val);
+	    		if(memory[(*it2)->val])
 	    		{
 	    			continue;
 	    		}
@@ -91,9 +93,11 @@ public:
     			{
     				return false;
     			}
-    			memory.insert(pair<int, bool>((*it2)->val, true));
+    			memory[(*it2)->val] = true;
+    			//memory.insert(pair<int, bool>((*it2)->val, true));
     		}
-    		memory.insert(pair<int, bool>(it->first,true));
+    		memory[it->first] = true;
+    		//memory.insert(pair<int, bool>(it->first,true));
     	}
     	return true; 
     }
