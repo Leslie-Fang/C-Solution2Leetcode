@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <stdlib.h>
 using namespace std;
 
 class Solution {
@@ -47,9 +48,11 @@ public:
     	int sum = 0;
     	for(int i=0;i<nums.size();i++)
     	{
+    		//cout<<nums[i]<<endl;
     		sum += nums[i];
     	}
-    	cout<<sum<<endl;
+    	// return false;
+    	//cout<<sum<<endl;
     	if(sum %2 != 0)
     	{
     		return false;
@@ -57,12 +60,22 @@ public:
     	return helper(nums, sum/2, 0);
     }
     bool helper(vector<int>& nums, int sum, int index){
+    	if(index >= nums.size()) return false;
         if(sum == nums[index]) return true;
         if(sum < nums[index]) return false;
-        cout<<sum<<endl;
+   //      cout<<sum<<"--------"<<endl;
+   //      count = count + 1;
+   //      if(count >= 5)
+   //      {
+			// exit (EXIT_FAILURE);
+   //      }
         return helper(nums,sum-nums[index],index+1) || helper(nums,sum,index+1);
     }
+private:
+	static int count; 
 };
+
+int Solution::count = 0;
 
 int main()
 {
