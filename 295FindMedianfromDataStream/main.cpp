@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <algorithm>
 using namespace std;
 
 class MedianFinder {
@@ -8,67 +9,38 @@ public:
     MedianFinder() {
         
     }
+
+    ~MedianFinder(){
+        list.clear();
+        //mid.clear();
+    }
     
     void addNum(int num) {
-    	if(list.size() == 0)
-    	{
-    		list.push_back(num);
-    		mid.push_back(0);
-    		return;
-    	}else if(list.size() == 1)
-    	{
-    		if(num>list[0])
-    		{
-    			list.push_back(num);
-    			mid.push_back(1);
-    		}else
-    		{
-    			list.insert(list.begin(),num);
-    			mid.insert(mid.begin(),1);
-    		}
-    		return;
-    	}
-    	vector<int>::iterator pre=list.begin();
-    	if(num <= *pre)
-    	{
-    		list.insert(pre,num);
-    		if(mid.size() == 1)
-    		{
-    			mid.push_back(*(mid.begin())+1);
-    		}else
-    		{
-				mid.erase(mid.begin());
-    		}
-    		return;
-    	}
-    	vector<int>::iterator it=list.begin();
-    	it++;
-    	int count = 1;
-    	for(vector<int>::iterator it2=it;it2<list.end();it2++)
-    	{
-    		if(num >= *pre && num <= *it2)
-    		{
-    			list.insert(it2,num);
-    			if(count > list.size()/2)
-    			{
-
-    			}else
-    			{
-
-    			}
-    			return;
-    		}
-    		count += 1;
-    		pre = it2;
-    	}
-    	return;
+        if(list.empty())
+        {
+            list.push_back(num);
+        }else
+        {
+            list.insert(lower_bound(list.begin(), list.end(), num), num); 
+        }
+        return;
     }
     
     double findMedian() {
-        
+        double res;
+        //sort(list.begin(), list.end());
+        int list_size = list.size();
+        if( list_size%2 == 0)
+        {
+            res = double(list[list_size/2]+list[list_size/2-1])/2;
+        }else
+        {
+            res = list[list_size/2];
+        }
+        return res;
     }
 
-    void print(){
+    void print() {
     	for(vector<int>::iterator it=list.begin();it<list.end();it++)
     	{
     		cout<<*it<<endl;
@@ -77,7 +49,7 @@ public:
     }
 private:
 	vector<int> list;
-    vector<int> mid;
+    //vector<int> mid;
 };
 
 int main()
@@ -85,10 +57,10 @@ int main()
 	MedianFinder * myMedianFinder = new MedianFinder();
 	myMedianFinder->addNum(2);
 	myMedianFinder->addNum(1);
-	myMedianFinder->print();
-	// cout<<myMedianFinder->findMedian()<<endl;
-	// myMedianFinder->addNum(3);
-	// cout<<myMedianFinder->findMedian()<<endl;
+	//myMedianFinder->print();
+	cout<<myMedianFinder->findMedian()<<endl;
+	myMedianFinder->addNum(3);
+	cout<<myMedianFinder->findMedian()<<endl;
 	delete myMedianFinder;
 	return 0;
 }
