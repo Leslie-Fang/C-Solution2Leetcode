@@ -46,7 +46,6 @@ public:
                 		q.push(centor(tem.start-1,tem.end+1));
                 	}
                 }
-
     		}
     		if(q.empty())
     		{
