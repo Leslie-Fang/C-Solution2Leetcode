@@ -12,11 +12,11 @@ public:
   		if(nums.size()<=0){
   			return nums;
   		}
-    	list<int> res;
-    	list<int>::iterator it;
-    	list<int> temp;
-    	res.push_front(0);
-    	temp.push_front(nums[nums.size()-1]);
+    	vector<int> res;
+    	vector<int>::iterator it;
+    	vector<int> temp;
+    	res.push_back(0);
+    	temp.push_back(nums[nums.size()-1]);
     	for(int i=nums.size()-2;i>=0;i--){
     		it = lower_bound(temp.begin(),temp.end(),nums[i]);
     		//计算两个iterator之间的距离
@@ -26,10 +26,10 @@ public:
     		}else{
     			temp.insert(it,nums[i]);
     		}
-    		res.push_front(count);
+    		res.insert(res.begin(), count);
     	}
-    	vector<int> res2(begin(res), end(res));
-    	return res2; 
+    	//vector<int> res2(begin(res), end(res));
+    	return res; 
     }
 };
 
