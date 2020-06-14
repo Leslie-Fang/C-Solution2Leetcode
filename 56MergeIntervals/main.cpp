@@ -1,54 +1,50 @@
 #include <iostream>
 #include <iterator>
 #include <vector>
+#include <algorithm>
 using namespace std;
 
 class Solution {
 public:
-    vector<vector<int>> merge(vector<vector<int>>& intervals) {
+    // static bool cmp(vector<int> a,vector<int> b){
+    //     return a[0]<b[0];
+    // }
+    vector<vector<int> > merge(vector<vector<int>>& intervals) {
     	//Sort
-    	vector<int>* temp = &intervals[0];
-    	vector<vector<int>> res;
-    	for(int i=0;i<intervals.size()-1;i++)
-    	{
-    		for(int j=i+1;j<intervals.size();j++)
-    		{
-    			if(intervals[j-1][0] > intervals[j][0])
-    			{
-    				temp = &intervals[j-1];
-    				intervals[j-1] = intervals[j];
-    				intervals[j] = *temp;
-    			}
-    		}
-    	}
-    	vector<vector<int>>::iterator it=intervals.begin();
-    	int compare = (*it)[1];
-    	while(1)
-    	{
-    		if(compare >= (*next(it))[1])
-    		{
-    			if(res.back() != *it)
-    			{
-    				res.push_back(*it);
-    			}
-    			intervals.erase(next(it));
-    		}else if(compare >= (*next(it))[0])
-    		{
-    			vector<int> temp2;
-    			temp2.push_back((*it)[0]);
-    			temp2.push_back((*next(it))[1]);
-    			res.push_back(temp2);
-    			compare = (*next(it))[1];
+        int size = intervals.size();
+        if(size == 0){
+            return intervals;
+        }
+        vector<vector<int> > res;
+        sort(intervals.begin(),intervals.begin()+size);
+        vector<vector<int>>::iterator worker;
+        vector<vector<int>>::iterator cmp;
 
-    			intervals.erase(next(it));
-    		}
+        worker = intervals.begin();
+        cmp = intervals.begin();
+        cmp ++;
 
-    		if(next(it) == intervals.end())
-    		{
-    			break;
-    		}
-    	}
-    	return res;
+        while(1){
+            if(cmp!=intervals.end()){
+                if((*cmp)[0] > (*worker)[1]){
+                    res.push_back(*worker);
+                    worker = cmp;
+                    cmp ++;
+                }else if((*cmp)[1]>(*worker)[1]){
+                    (*worker)[1] = (*cmp)[1];
+                    cmp ++;
+
+                }else if((*cmp)[1]<=(*worker)[1]){
+                    cmp ++;
+                }
+
+            }else{
+                cout<<"prepare to break"<<endl;
+                break;
+            }
+        }
+        res.push_back(*worker);
+        return res;
     }
 };
 
