@@ -2,6 +2,7 @@
 #include <string>
 #include <queue>
 #include <vector>
+#include <sstream>
 using namespace std;
  struct TreeNode {
       int val;
@@ -12,6 +13,22 @@ using namespace std;
  
 class Codec {
 public:
+    TreeNode* root;
+    // Codec(){
+    //     this->os = new ostringstream();
+    //     this->os->str("");
+    // }
+    ~Codec(){
+        DFS(root);
+        //delete root;
+    }
+    // std::ostringstream * os;
+    std::string repeat(int n) {
+        std::ostringstream os;
+        for(int i = 0; i < n; i++)
+            os << "*,";
+        return os.str();
+    }
     // Encodes a tree to a single string.
     string serialize(TreeNode* root) {
     	string res = "";
@@ -22,6 +39,7 @@ public:
     	int curindex;
     	int lastindex;
     	int loopnum = 1;
+        string myTemplate = "*,";
 
     	if(root)
     	{
@@ -42,12 +60,9 @@ public:
     			{
     				cur = list.front();
     				curindex = index.front();
-
-    				for(int i=0;i<(curindex-lastindex-1);i++)
-    				{
-    					res += "*,";
-    				}
-  
+                    
+                    res += repeat(curindex-lastindex-1);
+    
 	    			res += to_string(cur->val);
 	    			res += ",";
 	    			if(cur->left || cur->right)
@@ -68,10 +83,7 @@ public:
     				list.pop();
     				index.pop();
     			}
-    			for(int i=0;i<(loopnum-curindex-1);i++)
-    			{
-    					res += "*,";
-    			}
+                res += repeat(loopnum-curindex-1);
     			loopnum = loopnum * 2;
 	    	}
     	}
@@ -87,6 +99,7 @@ public:
 			cout<<","<<endl;
 			DFS(root->left);
 			DFS(root->right);
+            delete root;
 		}else
 		{
 			cout<<"*";
@@ -167,11 +180,14 @@ public:
 
 int main(int argc, char ** argv)
 {
-	string input;
-	getline(cin,input);
+	string input = "1,2,3,*,*,4,5,";
+	//getline(cin,input);
 	Codec * myCodec;
-	string res = myCodec->serialize(myCodec->deserialize(input));
-	cout<<res<<endl;
+    for(int i=0;i<50000;i++){
+        string res = myCodec->serialize(myCodec->deserialize(input));
+        cout<<res<<endl;
+    }
+    delete myCodec;
 	//myCodec->deserialize(input);
 	//delete myCodec;
 	//cout<<"xxxx"+std::string(5, "*,")<<endl;
