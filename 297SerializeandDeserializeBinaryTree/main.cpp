@@ -13,21 +13,11 @@ using namespace std;
  
 class Codec {
 public:
-    TreeNode* root;
-    // Codec(){
-    //     this->os = new ostringstream();
-    //     this->os->str("");
-    // }
-    ~Codec(){
-        DFS(root);
-        //delete root;
-    }
-    // std::ostringstream * os;
     std::string repeat(int n) {
-        std::ostringstream os;
+        string res = "";
         for(int i = 0; i < n; i++)
-            os << "*,";
-        return os.str();
+            res+= "null,";
+        return res;
     }
     // Encodes a tree to a single string.
     string serialize(TreeNode* root) {
@@ -39,8 +29,6 @@ public:
     	int curindex;
     	int lastindex;
     	int loopnum = 1;
-        string myTemplate = "*,";
-
     	if(root)
     	{
     		list.push(root);
@@ -99,10 +87,10 @@ public:
 			cout<<","<<endl;
 			DFS(root->left);
 			DFS(root->right);
-            delete root;
+            //delete root;
 		}else
 		{
-			cout<<"*";
+			cout<<"null";
 			cout<<","<<endl;
 		}
 		return;
@@ -115,10 +103,13 @@ public:
     	string temp = "";
         int length = data.length();
         queue<TreeNode*> nodelist;
+        //vector<string> data_vector;
+
         if(length != 0)
         {
         	pos2 = data.find(",");
         	temp = data.substr(pos1, pos2-pos1);
+            //cout<<"1:"<<temp<<endl;
         	root = new TreeNode(stoi(temp));
         	pos1 = pos2 + 1;
 
@@ -127,7 +118,6 @@ public:
 
         	while(pos1 < length-1)
         	{
-        		//cout<<pos1<<"  xxxx"<<endl;
         		int loop = nodelist.size();
         		for(int i=0;i<loop;i++)
         		{
@@ -142,7 +132,7 @@ public:
 			        	temp = data.substr(pos1, pos2-pos1);
 			        	pos1 = pos2 + 1;
 
-	        			if(temp != "*")
+	        			if(temp != "null")
 	        			{
 	        				cur->left = new TreeNode(stoi(temp));
 	        			}
@@ -154,39 +144,36 @@ public:
         				}
 			        	temp = data.substr(pos1, pos2-pos1);
 			        	pos1 = pos2 + 1;
-	        			if(temp != "*")
+	        			if(temp != "null")
 	        			{
 	        				cur->right = new TreeNode(stoi(temp));
 	        			}
 	        			nodelist.push(cur->right);
         			}else
         			{
-        				pos1 = pos1 + 4;
+        				pos1 = pos1 + 10;
 
         				nodelist.push(NULL);
         				nodelist.push(NULL);
         			}
         			nodelist.pop();
         		}
-
         	}
-
         }
-
-        //DFS(root);
         return root;
     }
 };
 
 int main(int argc, char ** argv)
 {
-	string input = "1,2,3,*,*,4,5,";
+    string input = "1,2,3,null,null,4,5,";
+	
 	//getline(cin,input);
-	Codec * myCodec;
-    for(int i=0;i<50000;i++){
-        string res = myCodec->serialize(myCodec->deserialize(input));
-        cout<<res<<endl;
-    }
+	Codec * myCodec = new Codec();
+    //for(int i=0;i<50000;i++){
+    string res = myCodec->serialize(myCodec->deserialize(input));
+    cout<<res<<endl;
+    //}
     delete myCodec;
 	//myCodec->deserialize(input);
 	//delete myCodec;
