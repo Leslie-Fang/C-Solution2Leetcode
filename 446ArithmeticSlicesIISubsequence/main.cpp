@@ -4,37 +4,34 @@ using namespace std;
 
 class Solution {
 public:
-	// bool isArithmeticSlices(const vector<int>& A, int start, int end){
-	// 	if(end-start < 2){
-	// 		return false;
-	// 	}
-	// 	int difference = A[start+1] - A[start];
-	// 	for(int i=start+2;i<=end;i++){
-	// 		if((A[i] - A[i-1]) != difference){
-	// 			return false;
-	// 		}
-	// 	}
-	// 	return true;
-	// }
+
+	void DFS(const vector<int>& A, int index, int compare_index, int & res, const long& difference){
+		if((A[index] - long(A[compare_index])) == difference){
+			res += 1;
+			for(int m=index+1;m<A.size();m++){
+	        	DFS(A, m, index, res, difference);
+	        }
+		}
+		return;
+	}
 
     int numberOfArithmeticSlices(vector<int>& A) {
     	if(A.size() < 3){
     		return 0;
     	}
         int res = 0;
-        int difference = 0;
+        long difference = 0;
+        int compare;
+
         for(int i=0;i<A.size()-2;i++){
-        	for(int step=1; i+step*2 < A.size(); step++){
-	        	difference = A[i+step] - A[i];
-	        	if(A[i+step*2] - A[i+step] != difference){
-	        		continue;
-	        	}
-	        	res += 1;
-	        	for(int j=i+3*step;j<A.size();j = j+step){
-	        		if(A[j] - A[j-step] == difference){
+        	for(int j=i+1; j<A.size()-1; j++){
+        		difference = A[j] - long(A[i]);
+	        	for(int k=j+1; k<A.size(); k++){
+	        		if(A[k] - long(A[j]) == difference){
 	        			res += 1;
-	        		}else{
-	        			break;
+	        			for(int m=k+1;m<A.size();m++){
+	        				DFS(A, m, k, res, difference);
+	        			}
 	        		}
 	        	}
         	}
@@ -45,9 +42,9 @@ public:
 
 int main(int argc, char ** argv){
 	Solution * mySolution = new Solution();
-	//int a[3] = {3, 2, 1};
-	int a[5] = {2, 4, 6, 8, 10};
-	vector<int> vinput(a, a+5);
+	int a[4] = {2, 2, 3, 4};
+	//int a[5] = {2, 4, 6, 8, 10};
+	vector<int> vinput(a, a+4);
 	cout<<mySolution->numberOfArithmeticSlices(vinput)<<endl;
 	return 0;
 }
